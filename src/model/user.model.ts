@@ -1,7 +1,16 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
 
 @Table
 export class User extends Model {
+  @PrimaryKey
+  @AutoIncrement
   @Column({
     type: DataType.STRING,
     allowNull: false,
