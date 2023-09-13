@@ -24,4 +24,12 @@ export class UserRepository {
       password: hashedPassword,
     });
   }
+
+  async getUserByEmail(email: string): Promise<User> {
+    return await this.userModel.findOne({
+      where: {
+        email: email,
+      },
+    });
+  }
 }

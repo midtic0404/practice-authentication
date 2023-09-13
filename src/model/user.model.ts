@@ -12,6 +12,11 @@ export class User extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column({
+    type: DataType.INTEGER,
+  })
+  id: number;
+
+  @Column({
     type: DataType.STRING,
     allowNull: false,
   })
