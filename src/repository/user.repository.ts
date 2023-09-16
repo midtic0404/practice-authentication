@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from 'src/dto/create-user.dto';
 import { User } from 'src/model/user.model';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from 'src/dto/update-user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -25,11 +26,35 @@ export class UserRepository {
     });
   }
 
+  async getUserById(id: number): Promise<User> {
+    return await this.userModel.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   async getUserByEmail(email: string): Promise<User> {
     return await this.userModel.findOne({
       where: {
         email: email,
       },
     });
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const [numberOfAffectedRows, [updatedUser]] = await this.userModel.update(
+      updateUserDto,
+      {
+        where: { id },
+        returning: true,
+      },
+    );
+
+    if (numberOfAffectedRows === 0) {
+      return null;
+    }
+
+    return updatedUser;
   }
 }
