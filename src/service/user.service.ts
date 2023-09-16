@@ -9,6 +9,8 @@ import { LoginDto } from 'src/dto/login.dto';
 import { UserRepository } from 'src/repository/user.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateUserDto } from 'src/dto/update-user.dto';
+import { User } from 'src/model/user.model';
 
 @Injectable()
 export class UserService {
@@ -22,6 +24,16 @@ export class UserService {
     }
 
     return await this.userRepository.createUser(createUserDto);
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User does not exist');
+    }
+
+    return await this.userRepository.updateUser(id, updateUserDto);
   }
 
   async login(loginDto: LoginDto): Promise<{ token: string }> {
