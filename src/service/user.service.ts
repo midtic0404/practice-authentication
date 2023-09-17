@@ -27,12 +27,6 @@ export class UserService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.getUserById(id);
-
-    if (!user) {
-      throw new NotFoundException('User does not exist');
-    }
-
     return await this.userRepository.updateUser(id, updateUserDto);
   }
 

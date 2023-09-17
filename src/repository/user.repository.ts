@@ -43,18 +43,16 @@ export class UserRepository {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const [numberOfAffectedRows, [updatedUser]] = await this.userModel.update(
-      updateUserDto,
-      {
-        where: { id },
-        returning: true,
-      },
-    );
+    const affectedRow: number = await this.userModel.update(updateUserDto, {
+      where: { id },
+      returning: true,
+    })[1];
 
-    if (numberOfAffectedRows === 0) {
-      return null;
+    if (affectedRow === 0) {
+      throw new Error('No user is updated');
     }
 
+    const updatedUser = await this.getUserById(id);
     return updatedUser;
   }
 }
